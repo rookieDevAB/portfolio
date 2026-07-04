@@ -7,6 +7,7 @@ export default function ProjectsSection() {
       award: '2nd Runner-Up\nHack Arya Verse 2.0',
       marquee: ['AI VOICE AGENT', 'IVR REPLACEMENT', 'BANKING & HEALTHCARE', 'NLP PIPELINES'],
       tags: ['Hallucination guardrails', 'Intent validation', 'Real-time speech'],
+      link: 'https://github.com/rookieDevAB/arya-hackverse',
       className: 'r1',
     },
     {
@@ -16,6 +17,7 @@ export default function ProjectsSection() {
       award: 'Full-Stack\nAI Platform',
       marquee: ['ASCENDX EDTECH', 'MULTILINGUAL AI', '5+ LANGUAGES', '85% ACCURACY'],
       tags: ['Quiz generation engine', 'Voice narration', 'Adaptive roadmaps'],
+      link: 'https://github.com/rookieDevAB/AscendX-main',
       className: 'r2',
     },
     {
@@ -25,6 +27,7 @@ export default function ProjectsSection() {
       award: 'Top 10 / 250+\nCode-e-Manipal',
       marquee: ['VOICE VISTA', 'BROWSER ASSISTANT', 'SUB-200MS LATENCY', 'TOP 10 NATIONAL'],
       tags: ['Sub-200ms parsing', 'Tab management', 'Hands-free nav'],
+      link: 'https://github.com/rookieDevAB/VoiceVista',
       className: 'r3',
     },
   ];
@@ -37,7 +40,15 @@ export default function ProjectsSection() {
       </h2>
 
       {projects.map((proj, idx) => (
-        <div key={idx} className={`proj-row ${proj.className} reveal`} style={{ transitionDelay: `${(idx + 1) * 0.07 + 0.03}s` }}>
+        <a
+          key={idx}
+          className={`proj-row ${proj.className} reveal`}
+          style={{ transitionDelay: `${(idx + 1) * 0.07 + 0.03}s` }}
+          href={proj.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${proj.name} — view on GitHub`}
+        >
           <div className="proj-reveal">
             <div className="proj-marquee">
               {/* Render twice for seamless infinite loop */}
@@ -65,7 +76,7 @@ export default function ProjectsSection() {
               <div className="proj-arrow">→</div>
             </div>
           </div>
-        </div>
+        </a>
       ))}
     </section>
   );

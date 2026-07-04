@@ -82,3 +82,25 @@ Compile the optimized production bundles:
 npm run build
 ```
 The static files will be exported to the `.next/` directory ready for staging deployment.
+
+---
+
+## Changelog
+
+- 2026-07-04 — Responsive and layout improvements: updated `src/app/globals.css` to improve mobile responsiveness, fluid spacing, and typography across sections (About, Projects, Skills, Experience, Footer).
+- 2026-07-04 — Project links and accessibility: added direct GitHub links and anchor wrappers in `src/components/sections/ProjectsSection.js` so each project row opens the corresponding repository in a new tab with proper `rel` attributes.
+- 2026-07-04 — Minor accessibility and layout tweaks: improved flex/grid fallbacks, ensured wrap behavior on narrow viewports, and tuned spacing variables for consistent appearance.
+
+### How to verify
+
+1. Install dependencies and run the dev server:
+
+```bash
+npm install
+npm run dev
+```
+
+2. Open http://localhost:3000 and verify:
+- Projects open in new tabs when clicked.
+- Layout adapts correctly on mobile widths.
+

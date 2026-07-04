@@ -2,6 +2,10 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  --pad-x: clamp(16px, 4vw, 36px);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -41,8 +45,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 36px;
-  height: 48px;
+  flex-wrap: wrap;
+  gap: 4px clamp(16px, 3vw, 28px);
+  padding: 10px var(--pad-x);
+  min-height: 48px;
   position: relative;
   z-index: 10;
 }
@@ -50,7 +56,7 @@ body {
 .p-nav-logo {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 20px;
+  font-size: clamp(16px, 2.5vw, 20px);
   color: #f2ede6;
   letter-spacing: 0.04em;
   cursor: default;
@@ -58,7 +64,8 @@ body {
 
 .p-nav-links {
   display: flex;
-  gap: 28px;
+  flex-wrap: wrap;
+  gap: clamp(12px, 2.5vw, 28px);
   list-style: none;
 }
 
@@ -88,7 +95,7 @@ body {
 /* ABOUT */
 .s-about {
   background: #0d1117;
-  padding: 64px 36px 56px;
+  padding: clamp(48px, 7vw, 64px) var(--pad-x) clamp(40px, 6vw, 56px);
   border-bottom: 3px solid #f5a623;
   position: relative;
   overflow: hidden;
@@ -96,8 +103,8 @@ body {
 
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(320px, 42%)), 1fr));
+  gap: clamp(32px, 5vw, 48px);
   align-items: end;
 }
 
@@ -105,7 +112,7 @@ body {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
   font-style: italic;
-  font-size: clamp(52px, 10vw, 76px);
+  font-size: clamp(44px, 10vw, 76px);
   line-height: 0.92;
   color: #f2ede6;
   letter-spacing: -0.01em;
@@ -158,7 +165,7 @@ body {
 
 .about-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(140px, 42%)), 1fr));
   gap: 0;
   border-top: 1px solid #1e2530;
   border-left: 1px solid #1e2530;
@@ -174,7 +181,7 @@ body {
 .stat-n {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 36px;
+  font-size: clamp(28px, 2.5vw + 16px, 36px);
   color: #f5a623;
   line-height: 1;
 }
@@ -227,12 +234,13 @@ body {
   font-size: 11px;
   color: #9ca3af;
   letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
 }
 
 /* PROJECTS */
 .s-projects {
   background: #f2ede6;
-  padding: 56px 36px 64px;
+  padding: clamp(40px, 6vw, 56px) var(--pad-x) clamp(48px, 7vw, 64px);
   border-bottom: 3px solid #0d1117;
 }
 
@@ -244,11 +252,11 @@ body {
 .proj-heading {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 52px;
+  font-size: clamp(34px, 3vw + 24px, 52px);
   text-transform: uppercase;
   line-height: 1;
   color: #0d1117;
-  margin-bottom: 48px;
+  margin-bottom: clamp(32px, 4vw, 48px);
   letter-spacing: -0.01em;
 }
 
@@ -257,10 +265,13 @@ body {
 }
 
 .proj-row {
+  display: block;
   position: relative;
   border-top: 1px solid #b8b2aa;
   overflow: hidden;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .proj-row:last-child {
@@ -303,10 +314,10 @@ body {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
   font-style: italic;
-  font-size: 72px;
+  font-size: clamp(40px, 4vw + 24px, 72px);
   text-transform: uppercase;
   line-height: 1;
-  padding: 0 32px;
+  padding: 0 clamp(16px, 2.5vw, 32px);
   letter-spacing: -0.01em;
   user-select: none;
   white-space: nowrap;
@@ -324,10 +335,10 @@ body {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 48px 1fr auto;
-  gap: 0 20px;
+  grid-template-columns: clamp(28px, 3.5vw, 48px) 1fr auto;
+  gap: 0 clamp(12px, 2vw, 20px);
   align-items: center;
-  padding: 28px 0;
+  padding: clamp(20px, 3vw, 28px) 0;
   transition: padding-left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
@@ -348,7 +359,7 @@ body {
 .proj-name {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 28px;
+  font-size: clamp(20px, 1.5vw + 14px, 28px);
   text-transform: uppercase;
   line-height: 1.05;
   color: #0d1117;
@@ -370,7 +381,7 @@ body {
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
-  min-width: 120px;
+  min-width: 0;
 }
 
 .proj-award {
@@ -440,7 +451,7 @@ body {
 /* SKILLS */
 .s-skills {
   background: #f5a623;
-  padding: 64px 36px 56px;
+  padding: clamp(48px, 7vw, 64px) var(--pad-x) clamp(40px, 6vw, 56px);
   border-bottom: 3px solid #0d1117;
 }
 
@@ -452,17 +463,17 @@ body {
 .skills-title {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 52px;
+  font-size: clamp(34px, 3vw + 24px, 52px);
   text-transform: uppercase;
   line-height: 1;
   color: #0d1117;
-  margin-bottom: 40px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
   letter-spacing: -0.01em;
 }
 
 .skills-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(280px, 40%)), 1fr));
   gap: 0;
   border-top: 1px solid #c88a00;
   border-left: 1px solid #c88a00;
@@ -520,11 +531,12 @@ body {
 }
 
 .edu-row {
-  grid-column: span 2;
+  grid-column: 1 / -1;
   padding: 24px 20px;
   border-right: 1px solid #c88a00;
   border-bottom: 1px solid #c88a00;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -550,7 +562,7 @@ body {
 .edu-gpa {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 32px;
+  font-size: clamp(26px, 2vw + 16px, 32px);
   color: #0d1117;
   white-space: nowrap;
 }
@@ -558,7 +570,7 @@ body {
 /* EXPERIENCE */
 .s-exp {
   background: #0d1117;
-  padding: 64px 36px 56px;
+  padding: clamp(48px, 7vw, 64px) var(--pad-x) clamp(40px, 6vw, 56px);
   position: relative;
   overflow: hidden;
 }
@@ -566,11 +578,11 @@ body {
 .exp-title {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 52px;
+  font-size: clamp(34px, 3vw + 24px, 52px);
   text-transform: uppercase;
   line-height: 1;
   color: #f2ede6;
-  margin-bottom: 40px;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
   letter-spacing: -0.01em;
 }
 
@@ -581,14 +593,23 @@ body {
 .exp-block {
   border-top: 1px solid #1e2530;
   padding: 24px 0;
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+}
+
+.exp-block > div:first-child {
+  flex: 1 0 150px;
+  max-width: 160px;
+}
+
+.exp-block > div:last-child {
+  flex: 999 1 min(100%, 400px);
 }
 
 .exp-block:last-of-type {
   border-bottom: 1px solid #1e2530;
-  margin-bottom: 56px;
+  margin-bottom: clamp(40px, 5vw, 56px);
 }
 
 .exp-company {
@@ -647,14 +668,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: clamp(20px, 3vw, 24px);
   flex-wrap: wrap;
 }
 
 .contact-cta {
   font-family: var(--font-barlow-condensed), sans-serif;
   font-weight: 900;
-  font-size: 36px;
+  font-size: clamp(28px, 2vw + 20px, 36px);
   text-transform: uppercase;
   color: #f2ede6;
   line-height: 1;
@@ -666,6 +687,7 @@ body {
 
 .contact-links-row {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .clink {
@@ -675,17 +697,13 @@ body {
   text-decoration: none;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 10px 16px;
+  padding: 10px clamp(10px, 1.5vw, 16px);
   border: 1px solid #1e2530;
-  border-right: none;
+  margin: 0 -1px -1px 0;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-}
-
-.clink:last-child {
-  border-right: 1px solid #1e2530;
 }
 
 .clink:hover {
@@ -708,10 +726,12 @@ body {
 .p-footer {
   background: #0d1117;
   border-top: 1px solid #1e2530;
-  padding: 14px 36px;
+  padding: 14px var(--pad-x);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 20px;
 }
 
 .p-footer-copy {
