@@ -39,6 +39,7 @@ export default function ProjectsSection() {
         Selected<br /><span>Work</span>
       </h2>
 
+      <div className="proj-list">
       {projects.map((proj, idx) => (
         <a
           key={idx}
@@ -78,6 +79,7 @@ export default function ProjectsSection() {
           </div>
         </a>
       ))}
+      </div>
     </section>
   );
 }

@@ -1,9 +1,27 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { animate, stagger, createScope } from 'animejs';
 
 export default function Navbar() {
   const [logoText, setLogoText] = useState('ABHAY SONI');
   const logoInterval = useRef(null);
+  const navRef = useRef(null);
+  const scope = useRef(null);
+
+  // Entrance: stagger the logo + nav links in on mount (anime.js).
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    scope.current = createScope({ root: navRef.current }).add(() => {
+      animate('.p-nav-logo, .p-nav-links li', {
+        opacity: [0, 1],
+        translateY: [-14, 0],
+        delay: stagger(70, { start: 150 }),
+        duration: 650,
+        ease: 'outExpo',
+      });
+    });
+    return () => scope.current && scope.current.revert();
+  }, []);
 
   const handleScramble = (orig, setter, intervalRef, ms = 500) => {
     clearInterval(intervalRef.current);
@@ -31,7 +49,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="p-nav">
+    <nav className="p-nav" ref={navRef}>
       <span
         className="p-nav-logo"
         id="logo"

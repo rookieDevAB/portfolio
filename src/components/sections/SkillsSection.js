@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { animate, stagger, createScope } from 'animejs';
 
 export default function SkillsSection() {
   const [showSkills, setShowSkills] = useState(false);
@@ -66,6 +67,25 @@ export default function SkillsSection() {
     return () => observer.disconnect();
   }, []);
 
+  // Stagger the skill chips in with anime.js once the grid is in view.
+  useEffect(() => {
+    if (!showSkills || !sectionRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      sectionRef.current.querySelectorAll('.skill-chip').forEach((c) => c.classList.add('in'));
+      return;
+    }
+    const scope = createScope({ root: sectionRef.current }).add(() => {
+      animate('.skill-chip', {
+        opacity: [0, 1],
+        translateY: [8, 0],
+        delay: stagger(38),
+        duration: 520,
+        ease: 'outExpo',
+      });
+    });
+    return () => scope.revert();
+  }, [showSkills]);
+
   return (
     <section className="s-skills" id="skills">
       <div className="sec-label reveal">003 — Skills</div>
@@ -80,8 +100,7 @@ export default function SkillsSection() {
               {cat.items.map((s, sIdx) => (
                 <span
                   key={sIdx}
-                  className={`skill-chip ${s.dim ? 'dim' : ''} ${showSkills ? 'in' : ''}`}
-                  style={{ transitionDelay: showSkills ? `${s.delay}ms` : '0ms' }}
+                  className={`skill-chip ${s.dim ? 'dim' : ''}`}
                 >
                   {s.name}
                 </span>

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import { animate } from 'animejs';
 import { IconMail, IconMapPin, IconBrandGithub } from '@tabler/icons-react';
 
 export default function AboutSection() {
@@ -36,28 +37,22 @@ export default function AboutSection() {
     const orig = 'FULL\nSTACK\nAI\nBUILDER';
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
     const plain = orig.replace(/\n/g, ' ').toUpperCase();
+    const joint = orig.split('\n').join('');
     let f = 0;
     const total = Math.floor(700 / 16);
 
     headlineInterval.current = setInterval(() => {
       let o = '';
+      let jointIdx = 0;
       for (let i = 0; i < plain.length; i++) {
         if (plain[i] === ' ') {
           o += '\n';
           continue;
         }
-        o += f / total > i / plain.length ? orig.split('\n').join('')[i] : chars[Math.floor(Math.random() * chars.length)];
+        o += f / total > i / plain.length ? joint[jointIdx] : chars[Math.floor(Math.random() * chars.length)];
+        jointIdx++;
       }
-      // Insert newlines back at the original positions (every 4, 5, 2, 7 chars? No, original split lengths are 4, 5, 2, 7)
-      // Original lengths: FULL (4), STACK (5), AI (2), BUILDER (7)
-      let formatted = '';
-      let charIdx = 0;
-      const lines = ['FULL', 'STACK', 'AI', 'BUILDER'];
-      for (let line of lines) {
-        formatted += o.substring(charIdx, charIdx + line.length) + '\n';
-        charIdx += line.length;
-      }
-      setHeadline(formatted.trim());
+      setHeadline(o);
       f++;
       if (f > total) {
         setHeadline(orig);
@@ -66,15 +61,30 @@ export default function AboutSection() {
     }, 16);
   };
 
-  // Typing Bio
+  // Accent rule draw-in (anime.js) — scaleX so it won't clash with the
+  // CSS width hover effect.
   useEffect(() => {
-    const bioText = " CS undergrad at Arya College, Jaipur — SGPA 9.0. I build software that thinks: voice agents, adaptive EdTech platforms, browser automation. Hackathon-tested across 250+ national teams.";
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const anim = animate('.about-rule', {
+      scaleX: [0, 1],
+      opacity: [0, 1],
+      duration: 900,
+      delay: 600,
+      ease: 'outExpo',
+    });
+    return () => anim && anim.revert && anim.revert();
+  }, []);
+
+  // Typing Bio — slice-based so it's idempotent (safe under StrictMode
+  // double-invoke) and never appends an undefined trailing character.
+  useEffect(() => {
+    const bioText = "CS undergrad at Arya College, Jaipur — SGPA 9.0. I build software that thinks: voice agents, adaptive EdTech platforms, browser automation. Hackathon-tested across 250+ national teams.";
     let ti = 0;
     let timer;
     const tw = () => {
+      ti++;
+      setBio(bioText.slice(0, ti));
       if (ti < bioText.length) {
-        setBio((prev) => prev + bioText[ti]);
-        ti++;
         timer = setTimeout(tw, ti < 3 ? 80 : 20 + Math.random() * 20);
       }
     };
@@ -154,10 +164,13 @@ export default function AboutSection() {
             {renderHeadline()}
           </h1>
           <div className="about-rule"></div>
-          <p className="about-bio reveal" id="bio-el" style={{ transitionDelay: '.16s' }}>
+          <p className="about-bio reveal" id="bio-el" style={{ transitionDelay: '.16s' }} aria-hidden="true">
             {bio}
             <span className="tw-cursor" id="twc"></span>
           </p>
+          <span className="sr-only">
+            CS undergrad at Arya College, Jaipur — SGPA 9.0. I build software that thinks: voice agents, adaptive EdTech platforms, browser automation. Hackathon-tested across 250+ national teams.
+          </span>
         </div>
         <div className="reveal" style={{ transitionDelay: '.12s' }}>
           <div className="about-stats" ref={statsRef}>
@@ -173,18 +186,23 @@ export default function AboutSection() {
             ))}
           </div>
           <div className="about-contacts">
-            <div className="contact-row-item">
+            <a className="contact-row-item" href="mailto:devabhaysoni@gmail.com">
               <IconMail className="contact-icon" size={15} />
               <span className="contact-val">devabhaysoni@gmail.com</span>
-            </div>
+            </a>
             <div className="contact-row-item">
               <IconMapPin className="contact-icon" size={15} />
               <span className="contact-val">Jaipur, Rajasthan, IN</span>
             </div>
-            <div className="contact-row-item">
+            <a
+              className="contact-row-item"
+              href="https://github.com/rookieDevAB"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconBrandGithub className="contact-icon" size={15} />
-              <span className="contact-val">github.com/abhaysoni</span>
-            </div>
+              <span className="contact-val">github.com/rookieDevAB</span>
+            </a>
           </div>
         </div>
       </div>

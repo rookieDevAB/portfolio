@@ -1,6 +1,6 @@
 'use client';
 import { useRef } from 'react';
-import { IconBrandLinkedin, IconBrandGithub, IconMail } from '@tabler/icons-react';
+import { IconBrandLinkedin, IconBrandGithub, IconMail, IconDownload } from '@tabler/icons-react';
 
 export default function ExperienceSection() {
   const sectionRef = useRef(null);
@@ -22,6 +22,7 @@ export default function ExperienceSection() {
 
   // Resume Button Magnetic Effect
   const handleResumeMouseMove = (e) => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const btn = resumeBtnRef.current;
     if (!btn) return;
     const r = btn.getBoundingClientRect();
@@ -31,12 +32,14 @@ export default function ExperienceSection() {
   };
 
   const handleResumeMouseEnter = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (resumeBtnRef.current) {
       resumeBtnRef.current.style.transition = 'transform 0.1s, background 0.2s';
     }
   };
 
   const handleResumeMouseLeave = () => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const btn = resumeBtnRef.current;
     if (btn) {
       btn.style.transform = '';
@@ -47,7 +50,7 @@ export default function ExperienceSection() {
   return (
     <section
       className="s-exp"
-      id="contact"
+      id="experience"
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -74,7 +77,7 @@ export default function ExperienceSection() {
         </div>
       </div>
 
-      <div className="contact-strip reveal" style={{ transitionDelay: '.15s' }}>
+      <div className="contact-strip reveal" id="contact" style={{ transitionDelay: '.15s' }}>
         <div className="contact-cta">
           Let's build<br />something <span>real</span>
         </div>
@@ -82,7 +85,7 @@ export default function ExperienceSection() {
           <a className="clink" href="https://linkedin.com/in/abhaysoni" target="_blank" rel="noopener noreferrer">
             <IconBrandLinkedin size={14} />LinkedIn
           </a>
-          <a className="clink" href="https://github.com/abhaysoni" target="_blank" rel="noopener noreferrer">
+          <a className="clink" href="https://github.com/rookieDevAB" target="_blank" rel="noopener noreferrer">
             <IconBrandGithub size={14} />GitHub
           </a>
           <a className="clink" href="mailto:devabhaysoni@gmail.com">
@@ -90,7 +93,9 @@ export default function ExperienceSection() {
           </a>
           <a
             className="clink clink-primary"
-            href="#"
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             id="res-btn"
             ref={resumeBtnRef}
             onMouseMove={handleResumeMouseMove}
@@ -98,6 +103,15 @@ export default function ExperienceSection() {
             onMouseLeave={handleResumeMouseLeave}
           >
             Resume →
+          </a>
+          <a
+            className="clink clink-primary"
+            href="/resume.pdf"
+            download="Abhay-Soni-Resume.pdf"
+            aria-label="Download resume as PDF"
+            title="Download resume"
+          >
+            <IconDownload size={14} />
           </a>
         </div>
       </div>
