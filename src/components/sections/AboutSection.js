@@ -127,6 +127,13 @@ export default function AboutSection() {
     };
   }, []);
 
+  // Headline scramble interval cleanup on unmount
+  useEffect(() => {
+    return () => {
+      clearInterval(headlineInterval.current);
+    };
+  }, []);
+
   const renderHeadline = () => {
     if (headline !== 'FULL\nSTACK\nAI\nBUILDER') {
       return headline.split('\n').map((line, idx) => (

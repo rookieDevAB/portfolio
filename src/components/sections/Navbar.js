@@ -20,7 +20,10 @@ export default function Navbar() {
         ease: 'outExpo',
       });
     });
-    return () => scope.current && scope.current.revert();
+    return () => {
+      scope.current && scope.current.revert();
+      clearInterval(logoInterval.current);
+    };
   }, []);
 
   const handleScramble = (orig, setter, intervalRef, ms = 500) => {
