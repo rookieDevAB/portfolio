@@ -1,11 +1,17 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { animate } from 'animejs';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { IconMail, IconMapPin, IconBrandGithub } from '@tabler/icons-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutSection() {
   const [headline, setHeadline] = useState('FULL\nSTACK\nAI\nBUILDER');
   const [bio, setBio] = useState('');
+  const [isRevealed, setIsRevealed] = useState(false);
   const [stats, setStats] = useState([
     { label: 'AI projects live', target: 3, value: 0, suffix: '+' },
     { label: 'SGPA · 5 sems', target: 9, value: 0, suffix: '.0' },
@@ -17,6 +23,24 @@ export default function AboutSection() {
   const spotlightRef = useRef(null);
   const sectionRef = useRef(null);
   const statsRef = useRef(null);
+
+  // Scoped GSAP ScrollTrigger for reveals
+  useGSAP(() => {
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 88%',
+      onEnter: () => setIsRevealed(true),
+      once: true,
+    });
+  }, { scope: sectionRef });
+
+  // Safe fallback timeout to guarantee visibility
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Spotlight Effect
   const handleMouseMove = (e) => {
@@ -150,6 +174,21 @@ export default function AboutSection() {
     );
   };
 
+  const renderStat = (index) => {
+    const s = stats[index];
+    if (!s) return null;
+    return (
+      <div className="bento-stat-inner">
+        <div className="bento-stat-val">
+          {s.prefix || ''}
+          {s.target % 1 === 0 ? Math.round(s.value) : s.value.toFixed(1)}
+          {s.suffix || ''}
+        </div>
+        <div className="bento-stat-lbl">{s.label}</div>
+      </div>
+    );
+  };
+
   return (
     <section
       className="s-about"
@@ -159,39 +198,61 @@ export default function AboutSection() {
       onMouseLeave={handleMouseLeave}
     >
       <div className="spotlight" ref={spotlightRef}></div>
-      <div className="about-grid">
-        <div>
-          <div className="sec-label reveal">001 — About</div>
+      
+      <div className="about-bento-grid" ref={statsRef}>
+        {/* Card 1: Headline Scramble */}
+        <div className={`bento-card bento-headline reveal ${isRevealed ? 'visible' : ''}`}>
+          <div className="sec-label">001 — About</div>
           <h1
-            className="about-headline reveal"
+            className="about-headline"
             id="hero-hl"
-            style={{ transitionDelay: '.08s' }}
             onMouseEnter={handleScramble}
           >
             {renderHeadline()}
           </h1>
           <div className="about-rule"></div>
-          <p className="about-bio reveal" id="bio-el" style={{ transitionDelay: '.16s' }} aria-hidden="true">
+        </div>
+
+        {/* Card 2: AI Projects Live Stat */}
+        <div className={`bento-card bento-stat bento-projects reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.08s' }}>
+          {renderStat(0)}
+        </div>
+
+        {/* Card 3: Dynamic Typewriter Bio */}
+        <div className={`bento-card bento-bio reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.12s' }}>
+          <p className="about-bio" id="bio-el" aria-hidden="true">
             {bio}
             <span className="tw-cursor" id="twc"></span>
           </p>
           <span className="sr-only">
             CS undergrad at Arya College, Jaipur — SGPA 9.0. I build software that thinks: voice agents, adaptive EdTech platforms, browser automation. Hackathon-tested across 250+ national teams.
           </span>
-        </div>
-        <div className="reveal" style={{ transitionDelay: '.12s' }}>
-          <div className="about-stats" ref={statsRef}>
-            {stats.map((s, idx) => (
-              <div className="stat-box" key={idx}>
-                <div className="stat-n">
-                  {s.prefix || ''}
-                  {s.target % 1 === 0 ? Math.round(s.value) : s.value.toFixed(1)}
-                  {s.suffix || ''}
-                </div>
-                <div className="stat-d">{s.label}</div>
-              </div>
-            ))}
+          <div className="bento-tech-tags">
+            <span className="tech-tag">React / Next.js</span>
+            <span className="tech-tag">Python</span>
+            <span className="tech-tag">AI Agents</span>
+            <span className="tech-tag">Browser Automation</span>
+            <span className="tech-tag">Node.js</span>
           </div>
+        </div>
+
+        {/* Card 4: SGPA Academic Stat */}
+        <div className={`bento-card bento-stat bento-sgpa reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.16s' }}>
+          {renderStat(1)}
+        </div>
+
+        {/* Card 5: Rankings Stats */}
+        <div className={`bento-card bento-stat bento-rankings reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.20s' }}>
+          <div className="bento-rankings-container">
+            {renderStat(2)}
+            <div className="bento-divider"></div>
+            {renderStat(3)}
+          </div>
+        </div>
+
+        {/* Card 6: Contact & Social Info */}
+        <div className={`bento-card bento-contact reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.24s' }}>
+          <div className="bento-contact-title">Get in Touch</div>
           <div className="about-contacts">
             <a className="contact-row-item" href="mailto:devabhaysoni@gmail.com">
               <IconMail className="contact-icon" size={15} />
