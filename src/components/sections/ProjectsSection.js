@@ -1,4 +1,32 @@
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger);
+
 export default function ProjectsSection() {
+  const [isRevealed, setIsRevealed] = useState(false);
+  const sectionRef = useRef(null);
+
+  useGSAP(() => {
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 88%',
+      onEnter: () => setIsRevealed(true),
+      once: true,
+    });
+  }, { scope: sectionRef });
+
+  // Safe fallback timeout to guarantee visibility
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const projects = [
     {
       num: '01',
@@ -33,9 +61,9 @@ export default function ProjectsSection() {
   ];
 
   return (
-    <section className="s-projects" id="projects">
-      <div className="sec-label reveal">002 — Projects</div>
-      <h2 className="proj-heading reveal" style={{ transitionDelay: '.05s' }}>
+    <section className="s-projects" id="projects" ref={sectionRef}>
+      <div className={`sec-label reveal ${isRevealed ? 'visible' : ''}`}>002 — Projects</div>
+      <h2 className={`proj-heading reveal ${isRevealed ? 'visible' : ''}`} style={{ transitionDelay: '.05s' }}>
         Selected<br /><span>Work</span>
       </h2>
 
@@ -43,7 +71,7 @@ export default function ProjectsSection() {
       {projects.map((proj, idx) => (
         <a
           key={idx}
-          className={`proj-row ${proj.className} reveal`}
+          className={`proj-row ${proj.className} reveal ${isRevealed ? 'visible' : ''}`}
           style={{ transitionDelay: `${(idx + 1) * 0.07 + 0.03}s` }}
           href={proj.link}
           target="_blank"
