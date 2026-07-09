@@ -1,120 +1,216 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { animate, stagger, createScope } from 'animejs';
+import { useRef, useState, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { 
+  IconBrandPython, 
+  IconBrandJavascript, 
+  IconBrandReact, 
+  IconBrandNextjs, 
+  IconBrandTailwind, 
+  IconBrandNodejs, 
+  IconBrandGit, 
+  IconBrandGithub, 
+  IconDatabase, 
+  IconBrandTypescript,
+  IconBrandHtml5,
+  IconBrandCss3,
+  IconBrandDocker,
+  IconBrandMongodb,
+  IconBrandPrisma,
+  IconBrandVercel,
+  IconBrandFramer
+} from '@tabler/icons-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function SkillsSection() {
-  const [showSkills, setShowSkills] = useState(false);
-  const sectionRef = useRef(null);
+  const containerRef = useRef(null);
+  const [title, setTitle] = useState('TECHNICAL ARSENAL');
+  const [isRevealed, setIsRevealed] = useState(false);
+  const titleInterval = useRef(null);
 
-  const skillsData = [
-    {
-      cat: 'Languages',
-      items: [
-        { name: 'Python', delay: 0 },
-        { name: 'JavaScript', delay: 55 },
-        { name: 'Java', delay: 110 },
-        { name: 'C#', delay: 165 },
-        { name: 'C', delay: 220, dim: true },
-        { name: 'C++', delay: 275, dim: true },
-        { name: 'SQL', delay: 330, dim: true },
-      ],
-    },
-    {
-      cat: 'Frameworks',
-      items: [
-        { name: 'React', delay: 0 },
-        { name: 'Node.js', delay: 55 },
-        { name: 'Express.js', delay: 110 },
-        { name: 'Unity 3D', delay: 165 },
-        { name: 'JavaFX', delay: 220, dim: true },
-      ],
-    },
-    {
-      cat: 'AI / ML',
-      items: [
-        { name: 'LLM APIs', delay: 0 },
-        { name: 'NLP', delay: 55 },
-        { name: 'Voice AI', delay: 110 },
-        { name: 'OpenCV', delay: 165 },
-        { name: 'NumPy', delay: 220, dim: true },
-        { name: 'Pandas', delay: 275, dim: true },
-      ],
-    },
-    {
-      cat: 'Tooling',
-      items: [
-        { name: 'Git', delay: 0 },
-        { name: 'REST APIs', delay: 55 },
-        { name: 'JWT', delay: 110 },
-        { name: 'Postman', delay: 165 },
-        { name: 'Prisma ORM', delay: 220, dim: true },
-        { name: 'Jest', delay: 275, dim: true },
-      ],
-    },
-  ];
-
+  // Safe fallback timeout to guarantee visibility
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShowSkills(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
+    const timer = setTimeout(() => {
+      setIsRevealed(true);
+    }, 2500);
+    return () => clearTimeout(timer);
   }, []);
 
-  // Stagger the skill chips in with anime.js once the grid is in view.
-  useEffect(() => {
-    if (!showSkills || !sectionRef.current) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      sectionRef.current.querySelectorAll('.skill-chip').forEach((c) => c.classList.add('in'));
-      return;
-    }
-    const scope = createScope({ root: sectionRef.current }).add(() => {
-      animate('.skill-chip', {
-        opacity: [0, 1],
-        translateY: [8, 0],
-        delay: stagger(38),
-        duration: 520,
-        ease: 'outExpo',
-      });
+  const row1 = ['Python', 'JavaScript', 'Java', 'C#', 'C++', 'SQL', 'TypeScript'];
+  const row2 = ['LLM APIs', 'NLP', 'Voice AI', 'OpenCV', 'NumPy', 'Pandas', 'LangChain', 'AI Agents'];
+  const row3 = ['React', 'Node.js', 'Express.js', 'Git', 'REST APIs', 'JWT', 'Postman', 'Prisma ORM'];
+  
+  const iconsRow = [
+    IconBrandPython,
+    IconBrandJavascript,
+    IconBrandReact,
+    IconBrandNextjs,
+    IconBrandTailwind,
+    IconBrandNodejs,
+    IconBrandGit,
+    IconBrandGithub,
+    IconDatabase,
+    IconBrandTypescript,
+    IconBrandHtml5,
+    IconBrandCss3,
+    IconBrandDocker,
+    IconBrandMongodb,
+    IconBrandPrisma,
+    IconBrandVercel,
+    IconBrandFramer
+  ];
+
+  // Scramble header title on hover
+  const handleScrambleTitle = () => {
+    clearInterval(titleInterval.current);
+    const orig = 'TECHNICAL ARSENAL';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+    let f = 0;
+    const total = 25;
+
+    titleInterval.current = setInterval(() => {
+      let o = '';
+      for (let i = 0; i < orig.length; i++) {
+        if (orig[i] === ' ') {
+          o += ' ';
+          continue;
+        }
+        o += f / total > i / orig.length ? orig[i] : chars[Math.floor(Math.random() * chars.length)];
+      }
+      setTitle(o);
+      f++;
+      if (f > total) {
+        setTitle(orig);
+        clearInterval(titleInterval.current);
+      }
+    }, 20);
+  };
+
+  useGSAP(() => {
+    // Scroll reveal controller inside component to protect React virtual DOM reconciliation
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top 88%',
+      onEnter: () => setIsRevealed(true),
+      once: true,
     });
-    return () => scope.revert();
-  }, [showSkills]);
+
+    // 1. Setup infinite translation tweens
+    const loop1 = gsap.to('.track-1', {
+      xPercent: -50,
+      ease: 'none',
+      duration: 18,
+      repeat: -1,
+    });
+
+    const loop3 = gsap.to('.track-3', {
+      xPercent: -50,
+      ease: 'none',
+      duration: 20,
+      repeat: -1,
+    });
+
+    // Right drifting loops (-50% to 0%)
+    const loop2 = gsap.fromTo('.track-2', 
+      { xPercent: -50 }, 
+      { xPercent: 0, ease: 'none', duration: 22, repeat: -1 }
+    );
+
+    const loop4 = gsap.fromTo('.track-4', 
+      { xPercent: -50 }, 
+      { xPercent: 0, ease: 'none', duration: 25, repeat: -1 }
+    );
+
+    // 2. Velocity tracker using ScrollTrigger
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: (self) => {
+        const velocity = Math.abs(self.getVelocity() * 0.0035); // Scale velocity
+        const targetScale = 1 + velocity;
+        
+        gsap.to([loop1, loop2, loop3, loop4], {
+          timeScale: targetScale,
+          duration: 0.25,
+          overwrite: 'auto',
+        });
+      },
+      onLeave: () => {
+        gsap.to([loop1, loop2, loop3, loop4], { timeScale: 1, duration: 0.25 });
+      },
+      onEnterBack: () => {
+        gsap.to([loop1, loop2, loop3, loop4], { timeScale: 1, duration: 0.25 });
+      }
+    });
+  }, { scope: containerRef });
+
+  const renderTrack = (items) => (
+    <div className="marquee-content">
+      {items.map((item, idx) => (
+        <span className="marquee-item" key={idx}>
+          {item} <span className="marquee-star">★</span>
+        </span>
+      ))}
+    </div>
+  );
+
+  const renderIconTrack = (icons) => (
+    <div className="marquee-content">
+      {icons.map((Icon, idx) => (
+        <span className="marquee-icon-item" key={idx}>
+          <Icon className="brand-logo-icon" />
+          <span className="marquee-star">★</span>
+        </span>
+      ))}
+    </div>
+  );
 
   return (
-    <section className="s-skills" id="skills">
-      <div className="sec-label reveal">003 — Skills</div>
-      <h2 className="skills-title reveal" style={{ transitionDelay: '.05s' }}>
-        Technical<br /><em>Arsenal</em>
-      </h2>
-      <div className="skills-grid reveal" style={{ transitionDelay: '.1s' }} ref={sectionRef}>
-        {skillsData.map((cat, idx) => (
-          <div className="skill-cat" key={idx}>
-            <div className="skill-cat-label">{cat.cat}</div>
-            <div className="skill-items">
-              {cat.items.map((s, sIdx) => (
-                <span
-                  key={sIdx}
-                  className={`skill-chip ${s.dim ? 'dim' : ''}`}
-                >
-                  {s.name}
-                </span>
-              ))}
-            </div>
+    <section className="s-skills" id="skills" ref={containerRef}>
+      <div className="skills-header">
+        <div className={`sec-label reveal ${isRevealed ? 'visible' : ''}`}>// 003 — Skills</div>
+        <h2 
+          className={`skills-title reveal ${isRevealed ? 'visible' : ''}`}
+          onMouseEnter={handleScrambleTitle}
+        >
+          {title}
+        </h2>
+      </div>
+
+      <div className="skills-marquee-container">
+        {/* Row 1: Left drift */}
+        <div className="marquee-row marquee-left">
+          <div className="marquee-track track-1">
+            {renderTrack(row1)}
+            {renderTrack(row1)}
           </div>
-        ))}
-        <div className="edu-row">
-          <div>
-            <div className="edu-name">Arya College of Engineering &amp; IT</div>
-            <div className="edu-detail">B.Tech — Computer Science · Aug 2023 – May 2027 · Jaipur</div>
+        </div>
+
+        {/* Row 2: Right drift */}
+        <div className="marquee-row marquee-right">
+          <div className="marquee-track track-2">
+            {renderTrack(row2)}
+            {renderTrack(row2)}
           </div>
-          <div className="edu-gpa">
-            9.0 <span style={{ fontSize: '14px', fontWeight: 300, opacity: .5 }}>SGPA</span>
+        </div>
+
+        {/* Row 3: Left drift */}
+        <div className="marquee-row marquee-left">
+          <div className="marquee-track track-3">
+            {renderTrack(row3)}
+            {renderTrack(row3)}
+          </div>
+        </div>
+
+        {/* Row 4: Logo Loop (Right drift) */}
+        <div className="marquee-row marquee-right logo-loop-row">
+          <div className="marquee-track track-4">
+            {renderIconTrack(iconsRow)}
+            {renderIconTrack(iconsRow)}
           </div>
         </div>
       </div>
