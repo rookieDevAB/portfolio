@@ -952,12 +952,12 @@ body {
   opacity: 1;
 }
 
-.r2 .proj-reveal { background: #f2ede6; }
-.r2 .marquee-item { color: #0c0c0c; }
-.r2 .marquee-sep { color: #0c0c0c33; }
+.r2 .proj-reveal { background: #cf4b00; }
+.r2 .marquee-item { color: #ffffff; }
+.r2 .marquee-sep { color: #ffffff33; }
 .r2:hover .proj-num, .r2:hover .proj-name, .r2:hover .proj-sub, .r2:hover .proj-award, .r2:hover .proj-arrow, .r2:hover .ptag,
 .r2:focus-visible .proj-num, .r2:focus-visible .proj-name, .r2:focus-visible .proj-sub, .r2:focus-visible .proj-award, .r2:focus-visible .proj-arrow, .r2:focus-visible .ptag {
-  color: #0c0c0c;
+  color: #ffffff;
   opacity: 1;
 }
 
