@@ -961,7 +961,7 @@ body {
   opacity: 1;
 }
 
-.r3 .proj-reveal { background: #004cff; }
+.r3 .proj-reveal { background: #a33b00; }
 .r3 .marquee-item { color: #ffffff; }
 .r3 .marquee-sep { color: #ffffff33; }
 .r3:hover .proj-num, .r3:hover .proj-name, .r3:hover .proj-sub, .r3:hover .proj-award, .r3:hover .proj-arrow, .r3:hover .ptag,
