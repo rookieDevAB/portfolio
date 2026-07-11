@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '../components/sections/Navbar';
+import HeroSection from '../components/sections/HeroSection';
 import AboutSection from '../components/sections/AboutSection';
 import ProjectsSection from '../components/sections/ProjectsSection';
 import SkillsSection from '../components/sections/SkillsSection';
@@ -24,16 +25,6 @@ export default function Home() {
     }
 
     const ctx = gsap.context(() => {
-      // Use ScrollTrigger to add the .visible class when elements enter the viewport.
-      gsap.utils.toArray('.reveal').forEach((el) => {
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 88%',
-          onEnter: () => el.classList.add('visible'),
-          once: true,
-        });
-      });
-
       // Subtle parallax on the accent words (safe: these are child spans, so
       // they don't fight the parent's reveal transform).
       gsap.utils
@@ -72,6 +63,7 @@ export default function Home() {
       <a className="skip-link" href="#main">Skip to content</a>
       <Navbar />
       <main id="main">
+        <HeroSection />
         <AboutSection />
         <ProjectsSection />
         <SkillsSection />

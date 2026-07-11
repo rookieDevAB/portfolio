@@ -14,7 +14,10 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export default function SmoothScroll() {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                     window.matchMedia('(max-width: 1024px)').matches;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isMobile) return;
 
     const lenis = new Lenis({
       duration: 1.1,

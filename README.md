@@ -83,6 +83,12 @@ npm run build
 
 ## Changelog
 
+- 2026-07-11 — Typographic Footer Revamp & Scroll Refactoring:
+  - Footer Revamp: Upgraded the footer to a three-column editorial layout grid with direct navigation anchors, social links, and an integrated Resume action.
+  - Giant Display CTA: Implemented a massive typographic "LET'S BUILD" scroll-reveal slide-up title with desaturated orange colors and glowing hover highlights.
+  - Architecture Polish: Migrated from global DOM reveals to scoped, component-level React states (`isRevealed`) to ensure absolute styling consistency during React re-renders.
+  - Touch Scroll Optimization: Disabled Lenis smooth scrolling on mobile/tablet viewports (< 1024px) to prevent scroll clashes with mobile native touch inertia.
+  - Ngrok Hydration Resolution: Documented Next.js dev server WebSocket/HMR limitations over ngrok and set standard production build pipelines (`npm run build && npm run start`) for external tunnel previews.
 - 2026-07-05 — Visual & Accessibility Polish:
   - Scroll Polish: Fixed Lenis scroll jitter by disabling internal auto RAF (`autoRaf: false`) and aligning with GSAP's ticker loop.
   - Scroll Polish: Changed root `scroll-behavior` to `auto` to prevent browser scroll collision with Lenis, adding a `<noscript>` native fallback.

@@ -43,3 +43,11 @@ next-env.d.ts
 # backup folder
 /site_old/
 /site_backup/
+
+# agent & AI logs
+handover.md
+.agents/
+.gemini/
+.claude/
+CLAUDE.md
+AGENTS.md
