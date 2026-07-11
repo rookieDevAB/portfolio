@@ -49,7 +49,7 @@ export default function Footer() {
 
         <div className="footer-right">
           <a 
-            href="https://linkedin.com/in/abhaysoni" 
+            href="https://www.linkedin.com/in/contact-abhay/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="footer-link"
